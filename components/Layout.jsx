@@ -1,9 +1,7 @@
 import Head from 'next/head';
 import styles from '@/styles/Layout.module.css';
-import Footer from './Footer';
-import Header from './Header';
 import { useRouter } from 'next/router';
-import Showcase from './Showcase';
+import { Footer, Header, Showcase } from './index';
 
 const Layout = ({ title, description, keywords, children }) => {
    const { pathname } = useRouter();
