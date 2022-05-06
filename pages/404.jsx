@@ -1,6 +1,6 @@
-import Layout from '../components/Layout';
+import Layout from '@/components/Layout';
 import Link from 'next/link';
-import styles from '../styles/NotFound.module.css';
+import styles from '@/styles/NotFound.module.css';
 
 const NotFound = () => {
    return (
