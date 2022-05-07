@@ -6,19 +6,12 @@ import Link from 'next/link';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import Image from 'next/image';
 
-const Event = ({
-   event: {
-      id,
-      name,
-      date,
-      time,
-      image,
-      performers,
-      description,
-      venue,
-      address,
-   },
-}) => {
+const Event = ({ event: { id, attributes } }) => {
+   const { name, date, time, image, performers, description, venue, address } =
+      attributes;
+
+   console.log(attributes);
+
    const deleteEventHandler = () => {};
 
    return (
@@ -39,12 +32,17 @@ const Event = ({
                </a>
             </div>
             <span>
-               {date} at {time}
+               {new Date(date).toLocaleDateString('en-US')} at {time}
             </span>
             <h1>{name}</h1>
             {image && (
                <div className={styles.image}>
-                  <Image src={image} width={960} height={600} alt={name} />
+                  <Image
+                     src={image?.data?.attributes?.formats?.medium?.url}
+                     width={960}
+                     height={600}
+                     alt={name}
+                  />
                </div>
             )}
             <h3>Performers:</h3>
@@ -62,8 +60,8 @@ const Event = ({
 };
 
 export const getStaticPaths = async () => {
-   const { data: events } = await axios.get(`${API_URL}/api/events`);
-   const paths = events.map(({ slug }) => ({
+   const { data } = await axios.get(`${API_URL}/api/dj-events`);
+   const paths = data.data.map(({ attributes: { slug } }) => ({
       params: { slug },
    }));
 
@@ -71,10 +69,10 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params: { slug } }) => {
-   const { data: events } = await axios.get(`${API_URL}/api/events/${slug}`);
+   const { data } = await axios.get(`${API_URL}/api/dj-events?slug=${slug}`);
 
    return {
-      props: { event: events[0], revalidate: 30 },
+      props: { event: data.data[0], revalidate: 30 },
    };
 };
 

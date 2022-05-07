@@ -12,7 +12,7 @@ const Home = ({ events }) => {
             <EventItem key={event.id} {...event} />
          ))}
          {events.length > 0 && (
-            <Link href="events">
+            <Link href="/events">
                <a className="btn-secondary">View All Events</a>
             </Link>
          )}
@@ -21,10 +21,10 @@ const Home = ({ events }) => {
 };
 
 export const getStaticProps = async () => {
-   const { data: events } = await axios.get(`${API_URL}/api/events`);
+   const { data } = await axios.get(`${API_URL}/api/dj-events?populate=*`);
 
    return {
-      props: { events: events.slice(0, 3) },
+      props: { events: data.data },
       revalidate: 30,
    };
 };
